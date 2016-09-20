@@ -67,8 +67,8 @@
 							<img *ngIf="!atk.selected" src="webapp/img/checkbox-empty-icon.png" class="selected-icon">
 						</td>
 						<td><img src="http://serebii.net/pokedex-bw/type/{{ atk.type }}.gif"></td>
-						<td [ngStyle]="{'font-weight': atk.givesStab === true ? 'bold' : 'normal'}">{{ atk.name }}</td>
-						<td [ngStyle]="{'font-weight': atk.givesStab === true ? 'bold' : 'normal'}">{{ atk.DPS }} DPS</td>
+						<td class="atk_name" [ngStyle]="{'font-weight': atk.givesStab === true ? 'bold' : 'normal'}">{{ atk.name }}</td>
+						<td class="atk_dps" [ngStyle]="{'font-weight': atk.givesStab === true ? 'bold' : 'normal'}">{{ atk.DPS.toFixed(2) }} DPS</td>
 					</tr>
 					<tr class="separator"></tr>
 					<tr *ngFor="let atk of mon.moves.charged">
@@ -77,11 +77,19 @@
 							<img *ngIf="!atk.selected" src="webapp/img/checkbox-empty-icon.png" class="selected-icon">
 						</td>
 						<td><img src="http://serebii.net/pokedex-bw/type/{{ atk.type }}.gif"></td>
-						<td [ngStyle]="{'font-weight': atk.givesStab === true ? 'bold' : 'normal'}">{{ atk.name }}</td>
-						<td [ngStyle]="{'font-weight': atk.givesStab === true ? 'bold' : 'normal'}">{{ atk.DPS }} DPS</td>
+						<td class="atk_name" [ngStyle]="{'font-weight': atk.givesStab === true ? 'bold' : 'normal'}">{{ atk.name }}</td>
+						<td class="atk_dps" [ngStyle]="{'font-weight': atk.givesStab === true ? 'bold' : 'normal'}">{{ atk.DPS.toFixed(2) }} DPS</td>
 					</tr>
 				</table>
 			</div>
+      <div class="dps_type">
+        <span *ngFor='let key of mon.dps'>
+<!--
+          <img src="http://serebii.net/pokedex-bw/type/{{ key }}.gif">
+          {{key | json}}
+-->
+        </span>
+      </div>
 			<table class="candies">
 				<tr>
 					<td><img src="webapp/img/sword-icon.png"></td>
@@ -98,12 +106,16 @@
 			</table>
 			<table class="iv">
 				<tr>
-					<td>IV</td>
+					<td>IV&nbsp;&nbsp;</td>
 					<td>{{ mon.iv_percentage | number:'.0-0' }}%</td>
 				</tr>
 				<tr>
-					<td>HP</td>
+					<td>HP&nbsp;&nbsp;</td>
 					<td>{{mon.current_hp}} / {{mon.max_hp}}</td>
+				</tr>
+				<tr>
+					<td>DPS&nbsp;&nbsp;</td>
+					<td>{{mon.dps.avg}}</td>
 				</tr>
 			</table>
 			<div class="actions">

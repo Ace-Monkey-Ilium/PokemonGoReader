@@ -115,3 +115,11 @@ table#stats-as-table th {
 	width:8em;
 	float:right;
 }
+
+.moves .atk_name {
+  text-align: left;
+}
+
+.moves .atk_dps {
+  text-align: right;
+}

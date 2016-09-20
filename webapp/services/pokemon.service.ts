@@ -51,49 +51,114 @@ export class PokemonService {
 			let resBody = res.json();
 			this._pokemon = resBody.pokemon as Pokemon[];
 			this._pokemon = this._pokemon.map(function (pokemon) {
+  			let fast_dps = {
+    			avg: 0
+  			};
+  			let fast_tt = 0;
+  			let charge_dps = {
+    			avg: 0
+  			};
+  			let charge_tt = 0;
+				let types: any = window['types_lookup'];
+
 				pokemon.type_1 = window['pokemon'][pokemon.pokedex_number].Type1.toLowerCase();
 				pokemon.type_2 = window['pokemon'][pokemon.pokedex_number].Type2.toLowerCase();
 
+        pokemon.attack_adjust = (pokemon.attack_iv + window['pokemon'][pokemon.pokedex_number].BaseAttack) / window['pokemon'][pokemon.pokedex_number].BaseAttack;
+
+        pokemon.stamina_adjust = (pokemon.stamina_iv + window['pokemon'][pokemon.pokedex_number].BaseStamina) / window['pokemon'][pokemon.pokedex_number].BaseStamina;
+
 				pokemon.moves = {
 					fast: window['pokemon'][pokemon.pokedex_number].QuickMoves.map(function (moveNumber: string) {
+						let mon: any = window['pokemon'][pokemon.pokedex_number];
 						let move: any = window['moves'][moveNumber.toString()];
-						
+//            let damage: number = Math.ceil(.5 * ((pokemon.attack_iv + mon.BaseAttack) * (window['CpM'][pokemon.level * 2 - 1]) / 203.83091480000002) * move.Power)
+            let damage: number = Math.ceil(.5 * ((pokemon.attack_iv + mon.BaseAttack) * (window['CpM'][79]) / 203.83091480000002) * move.Power);
 						let givesStab: boolean = false;
-						let dps: number = move.DPS;
+						let dps: number = Number((damage / (move.DurationMs / 1000)).toFixed(2));
+						let totalTime: number = Number(((Math.ceil(100 / (move.Energy * pokemon.stamina_adjust)) * move.DurationMs) / 1000).toFixed(2));
 
-						if(move.Type.toLowerCase() === pokemon.type_1 || move.Type.toLowerCase() === pokemon.type_2){
+						if (move.Type.toLowerCase() === pokemon.type_1 || move.Type.toLowerCase() === pokemon.type_2) {
+
 							givesStab = true;
 							dps = Number((dps * 1.25).toFixed(2));
 						}
+
+            if (pokemon.move_1.toString() === moveNumber.toString()) {
+
+              fast_dps = window['types_dict'].map(function (type: string) {
+
+                let obj: any = {};
+
+                obj[type] = dps * window['attack_matrix'][types[type]][types[move.Type]];
+
+                return obj;
+              });
+
+              fast_tt = totalTime;
+              fast_dps.avg = dps;
+            }
 
 						return new Move(
 							move.Type.toLowerCase(),
 							pokemon.move_1.toString() === moveNumber.toString(),
 							dps,
 							move.Name,
-							givesStab
+							givesStab,
+							totalTime
 						);
 					}),
 					charged: window['pokemon'][pokemon.pokedex_number].CinematicMoves.map(function (moveNumber: string) {
+						let mon: any = window['pokemon'][pokemon.pokedex_number];
 						let move: any = window['moves'][moveNumber.toString()];
-
+//            let damage: number = Math.ceil(.5 * ((pokemon.attack_iv + mon.BaseAttack) * (window['CpM'][pokemon.level * 2 - 1]) / 203.83091480000002) * move.Power)
+            let damage: number = Math.ceil(.5 * ((pokemon.attack_iv + mon.BaseAttack) * (window['CpM'][79]) / 203.83091480000002) * move.Power);
 						let givesStab: boolean = false;
-						let dps: number = move.DPS;
+						let dps: number = Number((damage / (move.DurationMs / 1000)).toFixed(2));
+						let totalTime: number = Number(((Math.ceil(100 / move.Energy) * move.DurationMs) / 1000).toFixed(2));
 
-						if(move.Type.toLowerCase() === pokemon.type_1 || move.Type.toLowerCase() === pokemon.type_2){
+						if (move.Type.toLowerCase() === pokemon.type_1 || move.Type.toLowerCase() === pokemon.type_2) {
+
 							givesStab = true;
 							dps = Number((dps * 1.25).toFixed(2));
 						}
+
+            if (pokemon.move_2.toString() === moveNumber.toString()) {
+
+              charge_dps = window['types_dict'].map(function (type: string) {
+
+                let obj: any = {};
+
+                obj[type] = dps * window['attack_matrix'][types[type]][types[move.Type]];
+
+                return obj;
+              });
+
+              charge_tt = totalTime;
+              charge_dps.avg = dps;
+            }
 
 						return new Move(
 							move.Type.toLowerCase(),
 							pokemon.move_2.toString() === moveNumber.toString(),
 							dps,
 							move.Name,
-							givesStab
+							givesStab,
+							totalTime
 						);
 					})
 				};
+
+        pokemon.dps = window['types_dict'].map(function (type: string) {
+
+          let obj: any = {};
+
+          obj[type] = Number((((fast_tt * fast_dps[types[type]]) + (charge_tt * charge_dps[types[type]])) / (fast_tt + charge_tt)).toFixed(2));
+
+          return obj;
+        });
+
+        pokemon.dps.avg = Number((((fast_tt * fast_dps.avg) + (charge_tt * charge_dps.avg)) / (fast_tt + charge_tt)).toFixed(2));
 
 				pokemon.moves.fast = pokemon.moves.fast.sort((a,b) => {
 					if ( a.DPS < b.DPS ) return 1;

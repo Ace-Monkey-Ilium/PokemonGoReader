@@ -108,40 +108,8 @@ export class SortService {
 						if(moveA && moveB && moveA.DPS < moveB.DPS) return sortType.asc ? -1 : 1;
 						if(moveA && moveB && moveA.DPS > moveB.DPS) return sortType.asc ? 1 : -1;
 					} else if(sortType.property === 'DPS') {
-						let dpsA: number = 0;
-						let dpsB: number = 0;
-
-						for(let moveIdx: number = 0; moveIdx < a.moves.fast.length; moveIdx++){
-							let move: Move = a.moves.fast[moveIdx];
-							if(move.selected){
-								dpsA += move.DPS;
-								break;
-							}
-						}
-
-						for(let moveIdx: number = 0; moveIdx < b.moves.fast.length; moveIdx++){
-							let move: Move = b.moves.fast[moveIdx];
-							if(move.selected){
-								dpsB += move.DPS;
-								break;
-							}
-						}
-
-						for(let moveIdx: number = 0; moveIdx < a.moves.charged.length; moveIdx++){
-							let move: Move = a.moves.charged[moveIdx];
-							if(move.selected){
-								dpsA += move.DPS;
-								break;
-							}
-						}
-
-						for(let moveIdx: number = 0; moveIdx < b.moves.charged.length; moveIdx++){
-							let move: Move = b.moves.charged[moveIdx];
-							if(move.selected){
-								dpsB += move.DPS;
-								break;
-							}
-						}
+						let dpsA: number = a.dps.avg;
+						let dpsB: number = b.dps.avg;
 
 						if(dpsA < dpsB) return sortType.asc ? -1 : 1;
 						if(dpsA > dpsB) return sortType.asc ? 1 : -1;
