@@ -117,6 +117,10 @@
 					<td>DPS&nbsp;&nbsp;</td>
 					<td>{{mon.dps.avg}}</td>
 				</tr>
+				<tr>
+					<td>GYM&nbsp;&nbsp;</td>
+					<td>{{mon.dps.gym}}</td>
+				</tr>
 			</table>
 			<div class="actions">
 				<button [hidden]="!settings.showTransferButton" type="button" [disabled]="mon.favorite || _operatingOnPokemonAtIndex !== null" (click)="_transferPokemon(mon, i)">{{_getTransferButtonText(i)}}</button>

@@ -52,11 +52,15 @@ export class PokemonService {
 			this._pokemon = resBody.pokemon as Pokemon[];
 			this._pokemon = this._pokemon.map(function (pokemon) {
   			let fast_dps = {
-    			avg: 0
+    			avg: 0,
+    			gym: 0
   			};
   			let fast_tt = 0;
+  			let fast_gym_tt = 0;
+  			let charge_gym_tt = 0;
   			let charge_dps = {
-    			avg: 0
+    			avg: 0,
+    			gym: 0
   			};
   			let charge_tt = 0;
 				let types: any = window['types_lookup'];
@@ -96,7 +100,9 @@ export class PokemonService {
               });
 
               fast_tt = totalTime;
+              fast_gym_tt = totalTime;
               fast_dps.avg = dps;
+              fast_dps.gym = dps;
             }
 
 						return new Move(
@@ -135,7 +141,9 @@ export class PokemonService {
               });
 
               charge_tt = totalTime;
+              charge_gym_tt = Math.ceil(100 / move.Energy);
               charge_dps.avg = dps;
+              charge_dps.gym = damage / 2;
             }
 
 						return new Move(
@@ -157,6 +165,8 @@ export class PokemonService {
 
           return obj;
         });
+
+        pokemon.dps.gym = Number((((fast_gym_tt * fast_dps.gym) + (charge_gym_tt * charge_dps.gym)) / (fast_gym_tt + charge_gym_tt)).toFixed(2));
 
         pokemon.dps.avg = Number((((fast_tt * fast_dps.avg) + (charge_tt * charge_dps.avg)) / (fast_tt + charge_tt)).toFixed(2));
 
