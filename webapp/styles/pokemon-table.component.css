@@ -118,6 +118,7 @@ table#stats-as-table th {
 	width: 100%;
 	text-align: center;
 	line-height: 140%;
+	min-height: 76px;
 }
 .pokemon-list-item .moves table .selected-icon {
 	width: 10px;

@@ -60,7 +60,7 @@
 				<span class="type_{{ mon.type_2 }}">{{ mon.type_2 }}</span>
 			</div>
 			<div class="moves">
-				<table>
+				<table class="fast_moves">
 					<tr *ngFor="let atk of mon.moves.fast" [ngStyle]="{'opacity': atk.selected === true ? '1' : '.5'}">
 						<td>
   						<span *ngIf="atk.selected">&#9899;</span>
@@ -70,7 +70,8 @@
 						<td class="atk_name" [ngStyle]="{'font-weight': atk.givesStab === true ? 'bold' : 'normal'}">{{ atk.name }}</td>
 						<td class="atk_dps" [ngStyle]="{'font-weight': atk.givesStab === true ? 'bold' : 'normal'}">{{ atk.DPS.toFixed(2) }} DPS</td>
 					</tr>
-					<tr class="separator"></tr>
+				</table>
+				<table class="charged_moves">
 					<tr *ngFor="let atk of mon.moves.charged" [ngStyle]="{'opacity': atk.selected === true ? '1' : '.5'}">
 						<td>
   						<span *ngIf="atk.selected">&#9899;</span>
