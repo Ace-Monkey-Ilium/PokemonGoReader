@@ -80,7 +80,9 @@ export class PokemonService {
             let damage: number = Math.ceil(.5 * ((pokemon.attack_iv + mon.BaseAttack) * (window['CpM'][79]) / 203.83091480000002) * move.Power);
 						let givesStab: boolean = false;
 						let dps: number = Number((damage / (move.DurationMs / 1000)).toFixed(2));
-						let totalTime: number = Number(((Math.ceil(100 / (move.Energy * pokemon.stamina_adjust)) * move.DurationMs) / 1000).toFixed(2));
+						let attacks_between_defends: number = Math.floor(1700 / move.DurationMs);
+						let attacks_till_full_energy: number = Math.ceil(100 / (move.Energy * pokemon.stamina_adjust));
+						let totalTime: number = (Math.floor(attacks_till_full_energy / attacks_between_defends) * 2) + ((attacks_till_full_energy % attacks_between_defends) * (move.DurationMs / 1000));
 
 						if (move.Type.toLowerCase() === pokemon.type_1 || move.Type.toLowerCase() === pokemon.type_2) {
 
@@ -121,7 +123,7 @@ export class PokemonService {
             let damage: number = Math.ceil(.5 * ((pokemon.attack_iv + mon.BaseAttack) * (window['CpM'][79]) / 203.83091480000002) * move.Power);
 						let givesStab: boolean = false;
 						let dps: number = Number((damage / (move.DurationMs / 1000)).toFixed(2));
-						let totalTime: number = Number(((Math.ceil(100 / move.Energy) * move.DurationMs) / 1000).toFixed(2));
+						let totalTime: number = (Math.ceil(100 / move.Energy) * (move.DurationMs + 500)) / 1000;
 
 						if (move.Type.toLowerCase() === pokemon.type_1 || move.Type.toLowerCase() === pokemon.type_2) {
 

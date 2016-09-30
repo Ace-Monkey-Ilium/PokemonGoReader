@@ -46,37 +46,37 @@
 		<div class="pokemon-list-item" *ngFor="let mon of _pokemonService.pokemon; let i = index">
 			<div class="title">
 				CP {{ mon.cp }}
-				<img *ngIf="mon.favorite" class="favorite" src="webapp/img/star-icon.png">
+				<span class="star" *ngIf="mon.favorite">&#9733;</span>
 			</div>
 			<div>
 				Level {{ mon.level }}
 			</div>
-			<img class="image" src="https://silphassets.a.cdnify.io/img/pokemon/icons/96x96/{{mon.pokedex_number}}.png" title="{{mon.species}}"/>
+			<img class="image" src="webapp/img/pokemon_icons/{{mon.pokedex_number}}.png" title="{{mon.species}}"/>
 			<div class="name">
 				{{ mon.name }}
 			</div>
 			<div class="type">
-				<img src="http://serebii.net/pokedex-bw/type/{{ mon.type_1 }}.gif">
-				<img *ngIf="mon.type_2 !== 'None'" src="http://serebii.net/pokedex-bw/type/{{ mon.type_2 }}.gif">
+				<span class="type_{{ mon.type_1 }}">{{ mon.type_1 }}</span>
+				<span class="type_{{ mon.type_2 }}">{{ mon.type_2 }}</span>
 			</div>
 			<div class="moves">
 				<table>
-					<tr *ngFor="let atk of mon.moves.fast">
+					<tr *ngFor="let atk of mon.moves.fast" [ngStyle]="{'opacity': atk.selected === true ? '1' : '.5'}">
 						<td>
-							<img *ngIf="atk.selected" src="webapp/img/checkbox-filled-icon.png" class="selected-icon">
-							<img *ngIf="!atk.selected" src="webapp/img/checkbox-empty-icon.png" class="selected-icon">
+  						<span *ngIf="atk.selected">&#9899;</span>
+  						<span *ngIf="!atk.selected">&#9900;</span>
 						</td>
-						<td><img src="http://serebii.net/pokedex-bw/type/{{ atk.type }}.gif"></td>
+						<td><span class="type_{{ atk.type }}">{{ atk.type }}</span></td>
 						<td class="atk_name" [ngStyle]="{'font-weight': atk.givesStab === true ? 'bold' : 'normal'}">{{ atk.name }}</td>
 						<td class="atk_dps" [ngStyle]="{'font-weight': atk.givesStab === true ? 'bold' : 'normal'}">{{ atk.DPS.toFixed(2) }} DPS</td>
 					</tr>
 					<tr class="separator"></tr>
-					<tr *ngFor="let atk of mon.moves.charged">
+					<tr *ngFor="let atk of mon.moves.charged" [ngStyle]="{'opacity': atk.selected === true ? '1' : '.5'}">
 						<td>
-							<img *ngIf="atk.selected" src="webapp/img/checkbox-filled-icon.png" class="selected-icon">
-							<img *ngIf="!atk.selected" src="webapp/img/checkbox-empty-icon.png" class="selected-icon">
+  						<span *ngIf="atk.selected">&#9899;</span>
+  						<span *ngIf="!atk.selected">&#9900;</span>
 						</td>
-						<td><img src="http://serebii.net/pokedex-bw/type/{{ atk.type }}.gif"></td>
+						<td><span class="type_{{ atk.type }}">{{ atk.type }}</span></td>
 						<td class="atk_name" [ngStyle]="{'font-weight': atk.givesStab === true ? 'bold' : 'normal'}">{{ atk.name }}</td>
 						<td class="atk_dps" [ngStyle]="{'font-weight': atk.givesStab === true ? 'bold' : 'normal'}">{{ atk.DPS.toFixed(2) }} DPS</td>
 					</tr>
@@ -92,15 +92,15 @@
       </div>
 			<table class="candies">
 				<tr>
-					<td><img src="webapp/img/sword-icon.png"></td>
+					<td><i class="ra ra-sword ra-2x"></i></td>
 					<td>{{ mon.attack_iv }}</td>
 				</tr>
 				<tr>
-					<td><img src="webapp/img/shield-icon.png"></td>
+					<td><i class="ra ra-shield ra-2x"></i></td>
 					<td>{{ mon.defense_iv }}</td>
 				</tr>
 				<tr>
-					<td><img src="webapp/img/heart-icon.png"></td>
+					<td><i class="ra ra-hearts ra-2x"></i></td>
 					<td>{{ mon.stamina_iv }}</td>
 				</tr>
 			</table>
