@@ -66,7 +66,7 @@ table#stats-as-table th {
 	margin: 3px;
 	display: inline-block;
 	width: 300px;
-	height: 350px;
+	height: 380px;
 	padding: .5em;
 	overflow: hidden;
 	position: relative;
@@ -75,11 +75,12 @@ table#stats-as-table th {
 .pokemon-list-item .title .star {
   position: absolute;
   left: 50%;
-  top: 10px;
-  font-size: 800%;
+  top: -15px;
+  font-size: 1000%;
   transform: translateX(-50%);
   text-shadow: -1px 0 #000000,0 1px #000000,1px 0 #000000,0 -1px #000000;
   color: rgb(255,  200,  0);
+  opacity: .4;
 }
 .pokemon-list-item .title {
 	font-weight: bold;
@@ -118,7 +119,6 @@ table#stats-as-table th {
 	width: 100%;
 	text-align: center;
 	line-height: 140%;
-	min-height: 76px;
 }
 .pokemon-list-item .moves table .selected-icon {
 	width: 10px;
@@ -227,4 +227,26 @@ table#stats-as-table th {
 }
 .pokemon-list-item .type_none {
   display: none;
+}
+
+.pokemon-list-item .moves table.fast_moves,
+.pokemon-list-item .moves table.charged_moves {
+  min-height: 65px;
+  display: flex;
+  margin-top: 10px;
+}
+.pokemon-list-item .moves table.charged_moves {
+  min-height: 105px;
+}
+.pokemon-list-item .moves table.fast_moves td:first-child,
+.pokemon-list-item .moves table.charged_moves td:first-child {
+  width: 15px;
+}
+.pokemon-list-item .moves table.fast_moves td:nth-child(2),
+.pokemon-list-item .moves table.charged_moves td:nth-child(2) {
+  width: 60px;
+}
+.pokemon-list-item .moves table.fast_moves td:nth-child(3),
+.pokemon-list-item .moves table.charged_moves td:nth-child(3) {
+  width: 130px;
 }

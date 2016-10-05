@@ -107,9 +107,50 @@ export class SortService {
 
 						if(moveA && moveB && moveA.DPS < moveB.DPS) return sortType.asc ? -1 : 1;
 						if(moveA && moveB && moveA.DPS > moveB.DPS) return sortType.asc ? 1 : -1;
-					} else if(sortType.property === 'DPS') {
+					} else if(sortType.property === 'dps.avg') {
 						let dpsA: number = a.dps.avg;
 						let dpsB: number = b.dps.avg;
+
+						if(dpsA < dpsB) return sortType.asc ? -1 : 1;
+						if(dpsA > dpsB) return sortType.asc ? 1 : -1;
+					} else if(sortType.property === 'dps.gym') {
+						let dpsA: number = a.dps.gym;
+						let dpsB: number = b.dps.gym;
+
+						if(dpsA < dpsB) return sortType.asc ? -1 : 1;
+						if(dpsA > dpsB) return sortType.asc ? 1 : -1;
+					} else if(sortType.property === 'dps.current_avg') {
+						let dpsA: number = a.dps.current_avg;
+						let dpsB: number = b.dps.current_avg;
+
+						if(dpsA < dpsB) return sortType.asc ? -1 : 1;
+						if(dpsA > dpsB) return sortType.asc ? 1 : -1;
+					} else if(sortType.property === 'dps.current_gym') {
+						let dpsA: number = a.dps.current_gym;
+						let dpsB: number = b.dps.current_gym;
+
+						if(dpsA < dpsB) return sortType.asc ? -1 : 1;
+					} else if(sortType.property === 'dps.avg_cp') {
+						let dpsA: number = a.dps.avg_cp;
+						let dpsB: number = b.dps.avg_cp;
+
+						if(dpsA < dpsB) return sortType.asc ? -1 : 1;
+						if(dpsA > dpsB) return sortType.asc ? 1 : -1;
+					} else if(sortType.property === 'dps.gym_cp') {
+						let dpsA: number = a.dps.gym_cp;
+						let dpsB: number = b.dps.gym_cp;
+
+						if(dpsA < dpsB) return sortType.asc ? -1 : 1;
+						if(dpsA > dpsB) return sortType.asc ? 1 : -1;
+					} else if(sortType.property === 'dps.current_avg_cp') {
+						let dpsA: number = a.dps.current_avg_cp;
+						let dpsB: number = b.dps.current_avg_cp;
+
+						if(dpsA < dpsB) return sortType.asc ? -1 : 1;
+						if(dpsA > dpsB) return sortType.asc ? 1 : -1;
+					} else if(sortType.property === 'dps.current_gym_cp') {
+						let dpsA: number = a.dps.current_gym_cp;
+						let dpsB: number = b.dps.current_gym_cp;
 
 						if(dpsA < dpsB) return sortType.asc ? -1 : 1;
 						if(dpsA > dpsB) return sortType.asc ? 1 : -1;

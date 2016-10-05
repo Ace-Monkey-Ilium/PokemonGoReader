@@ -42,11 +42,12 @@ export class PokemonTableComponent {
 			this._utils.pad(date.getMinutes(), 2) + ':' + 
 			this._utils.pad(date.getSeconds(), 2);
 
-		} else if(property.includes('_dps')){
+		} else if(property.includes('_dps') || property.includes('_cp')){
 			let moveSplit: string[] = property.split('_');
 			let moveType: string = moveSplit.length >= 1 ? moveSplit[0] : '';
 			
-			if(moveType.toLowerCase() === 'total'){
+			if(moveType.toLowerCase() === 'potential' || moveType.toLowerCase() === 'potentialgym' || moveType.toLowerCase() === 'gym'){
+			} else if(moveType.toLowerCase() === 'total'){
 				let dps = 0;
 
 				for(let i: number = 0; i < pokemon.moves.fast.length; i++){

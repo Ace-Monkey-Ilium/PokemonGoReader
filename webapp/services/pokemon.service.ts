@@ -53,14 +53,16 @@ export class PokemonService {
 			this._pokemon = this._pokemon.map(function (pokemon) {
   			let fast_dps = {
     			avg: 0,
-    			gym: 0
+    			current_avg: 0,
+    			atk: 0
   			};
   			let fast_tt = 0;
   			let fast_gym_tt = 0;
   			let charge_gym_tt = 0;
   			let charge_dps = {
     			avg: 0,
-    			gym: 0
+    			current_avg: 0,
+    			atk: 0
   			};
   			let charge_tt = 0;
 				let types: any = window['types_lookup'];
@@ -72,13 +74,16 @@ export class PokemonService {
 
         pokemon.stamina_adjust = (pokemon.stamina_iv + window['pokemon'][pokemon.pokedex_number].BaseStamina) / window['pokemon'][pokemon.pokedex_number].BaseStamina;
 
+        pokemon.defense_adjust = (pokemon.defense_iv + window['pokemon'][pokemon.pokedex_number].BaseDefense) / window['pokemon'][pokemon.pokedex_number].BaseDefense;
+
 				pokemon.moves = {
 					fast: window['pokemon'][pokemon.pokedex_number].QuickMoves.map(function (moveNumber: string) {
 						let mon: any = window['pokemon'][pokemon.pokedex_number];
 						let move: any = window['moves'][moveNumber.toString()];
-//            let damage: number = Math.ceil(.5 * ((pokemon.attack_iv + mon.BaseAttack) * (window['CpM'][pokemon.level * 2 - 1]) / 203.83091480000002) * move.Power)
+            let current_damage: number = Math.ceil(.5 * ((pokemon.attack_iv + mon.BaseAttack) * (window['CpM'][pokemon.level * 2 - 1]) / 203.83091480000002) * move.Power)
             let damage: number = Math.ceil(.5 * ((pokemon.attack_iv + mon.BaseAttack) * (window['CpM'][79]) / 203.83091480000002) * move.Power);
 						let givesStab: boolean = false;
+						let current_dps: number = Number((current_damage / (move.DurationMs / 1000)).toFixed(2));
 						let dps: number = Number((damage / (move.DurationMs / 1000)).toFixed(2));
 						let attacks_between_defends: number = Math.floor(1700 / move.DurationMs);
 						let attacks_till_full_energy: number = Math.ceil(100 / (move.Energy * pokemon.stamina_adjust));
@@ -104,7 +109,7 @@ export class PokemonService {
               fast_tt = totalTime;
               fast_gym_tt = totalTime;
               fast_dps.avg = dps;
-              fast_dps.gym = dps;
+              fast_dps.current_avg = current_dps;
             }
 
 						return new Move(
@@ -119,9 +124,10 @@ export class PokemonService {
 					charged: window['pokemon'][pokemon.pokedex_number].CinematicMoves.map(function (moveNumber: string) {
 						let mon: any = window['pokemon'][pokemon.pokedex_number];
 						let move: any = window['moves'][moveNumber.toString()];
-//            let damage: number = Math.ceil(.5 * ((pokemon.attack_iv + mon.BaseAttack) * (window['CpM'][pokemon.level * 2 - 1]) / 203.83091480000002) * move.Power)
+            let current_damage: number = Math.ceil(.5 * ((pokemon.attack_iv + mon.BaseAttack) * (window['CpM'][pokemon.level * 2 - 1]) / 203.83091480000002) * move.Power)
             let damage: number = Math.ceil(.5 * ((pokemon.attack_iv + mon.BaseAttack) * (window['CpM'][79]) / 203.83091480000002) * move.Power);
 						let givesStab: boolean = false;
+						let current_dps: number = Number((current_damage / (move.DurationMs / 1000)).toFixed(2));
 						let dps: number = Number((damage / (move.DurationMs / 1000)).toFixed(2));
 						let totalTime: number = (Math.ceil(100 / move.Energy) * (move.DurationMs + 500)) / 1000;
 
@@ -145,7 +151,7 @@ export class PokemonService {
               charge_tt = totalTime;
               charge_gym_tt = Math.ceil(100 / move.Energy);
               charge_dps.avg = dps;
-              charge_dps.gym = damage / 2;
+              charge_dps.current_avg = current_dps;
             }
 
 						return new Move(
@@ -168,9 +174,22 @@ export class PokemonService {
           return obj;
         });
 
-        pokemon.dps.gym = Number((((fast_gym_tt * fast_dps.gym) + (charge_gym_tt * charge_dps.gym)) / (fast_gym_tt + charge_gym_tt)).toFixed(2));
+        pokemon.dps.gym = Number((((fast_gym_tt * fast_dps.avg) + (charge_gym_tt * (charge_dps.avg / 2))) / (fast_gym_tt + charge_gym_tt)).toFixed(2));
 
         pokemon.dps.avg = Number((((fast_tt * fast_dps.avg) + (charge_tt * charge_dps.avg)) / (fast_tt + charge_tt)).toFixed(2));
+
+        pokemon.dps.current_gym = Number((((fast_gym_tt * fast_dps.current_avg) + (charge_gym_tt * (charge_dps.current_avg /2))) / (fast_gym_tt + charge_gym_tt)).toFixed(2));
+
+        pokemon.dps.current_avg = Number((((fast_tt * fast_dps.current_avg) + (charge_tt * charge_dps.current_avg)) / (fast_tt + charge_tt)).toFixed(2));
+
+				let mon: any = window['pokemon'][pokemon.pokedex_number];
+
+        pokemon.max_hp =  Math.round(mon["Max HP"] * pokemon.defense_adjust);
+
+        pokemon.dps.gym_cp =  Math.round(pokemon.dps.gym * pokemon.max_hp);
+        pokemon.dps.avg_cp =  Math.round(pokemon.dps.avg * pokemon.max_hp);
+        pokemon.dps.current_gym_cp =  Math.round(pokemon.dps.current_gym * pokemon.current_hp);
+        pokemon.dps.current_avg_cp =  Math.round(pokemon.dps.current_avg * pokemon.current_hp);
 
 				pokemon.moves.fast = pokemon.moves.fast.sort((a,b) => {
 					if ( a.DPS < b.DPS ) return 1;

@@ -8,6 +8,7 @@ export class Pokemon {
 		public stamina_iv : number,
 		public attack_adjust : number,
 		public stamina_adjust : number,
+		public defense_adjust : number,
 		public current_hp: number,
 		public max_hp: number,
 		public iv_percentage: number,

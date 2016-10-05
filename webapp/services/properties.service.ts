@@ -46,7 +46,14 @@ export class PropertiesService {
 		new PokemonTableStat('iv_percentage', 'IV Percent'),
 		new PokemonTableStat('fast_dps', 'Quick Move'),
 		new PokemonTableStat('charged_dps', 'Charge Move'),
-		new PokemonTableStat('total_dps', 'DPS'),
+		new PokemonTableStat('total_dps', 'Current Attack DPS'),
+		new PokemonTableStat('potential_dps', 'Potential Attack DPS'),
+		new PokemonTableStat('gym_dps', 'Current Defend DPS'),
+		new PokemonTableStat('potentialgym_dps', 'Potential Defend DPS'),
+		new PokemonTableStat('total_cp', 'Current Attack Power (AP)'),
+		new PokemonTableStat('potential_cp', 'Potential Attack Power (AP)'),
+		new PokemonTableStat('gym_cp', 'Current Defend Power (DP)'),
+		new PokemonTableStat('potentialgym_cp', 'Potential Defend Power (DP)'),
 		new PokemonTableStat('favorite', 'Favorite'),
 		new PokemonTableStat('caught_time', 'Caught Time')
 	];
@@ -151,8 +158,64 @@ export class PropertiesService {
 		),
 
 		total_dps: new SortOrder(
-			'Total DPS', [
-			new SortType('DPS', false),
+			'Current Atack DPS', [
+			new SortType('dps.current_avg', false),
+			new SortType('cp', false),
+			new SortType('iv_percentage', false),
+			new SortType('pokedex_number', true)]
+		),
+
+		potential_dps: new SortOrder(
+			'Potential Attack DPS', [
+			new SortType('dps.avg', false),
+			new SortType('cp', false),
+			new SortType('iv_percentage', false),
+			new SortType('pokedex_number', true)]
+		),
+
+		gym_dps: new SortOrder(
+			'Current Defend DPS', [
+			new SortType('dps.current_gym', false),
+			new SortType('cp', false),
+			new SortType('iv_percentage', false),
+			new SortType('pokedex_number', true)]
+		),
+
+		potentialgym_dps: new SortOrder(
+			'Potential Defend DPS', [
+			new SortType('dps.gym', false),
+			new SortType('cp', false),
+			new SortType('iv_percentage', false),
+			new SortType('pokedex_number', true)]
+		),
+
+		total_cp: new SortOrder(
+			'Current Atack Power (AP)', [
+			new SortType('dps.current_avg_cp', false),
+			new SortType('cp', false),
+			new SortType('iv_percentage', false),
+			new SortType('pokedex_number', true)]
+		),
+
+		potential_cp: new SortOrder(
+			'Potential Attack Power (AP)', [
+			new SortType('dps.avg_cp', false),
+			new SortType('cp', false),
+			new SortType('iv_percentage', false),
+			new SortType('pokedex_number', true)]
+		),
+
+		gym_cp: new SortOrder(
+			'Current Defend Power (DP)', [
+			new SortType('dps.current_gym_cp', false),
+			new SortType('cp', false),
+			new SortType('iv_percentage', false),
+			new SortType('pokedex_number', true)]
+		),
+
+		potentialgym_cp: new SortOrder(
+			'Potential Defend Power (DP)', [
+			new SortType('dps.gym_cp', false),
 			new SortType('cp', false),
 			new SortType('iv_percentage', false),
 			new SortType('pokedex_number', true)]

@@ -115,12 +115,22 @@
 					<td>{{mon.current_hp}} / {{mon.max_hp}}</td>
 				</tr>
 				<tr>
-					<td>DPS&nbsp;&nbsp;</td>
-					<td>{{mon.dps.avg}}</td>
+					<td colspan="2">ATTACK</td>
 				</tr>
 				<tr>
-					<td>GYM&nbsp;&nbsp;</td>
-					<td>{{mon.dps.gym}}</td>
+					<td colspan="2">{{mon.dps.current_avg_cp}} / {{mon.dps.avg_cp}} AP</td>
+				</tr>
+				<tr>
+					<td colspan="2">{{mon.dps.current_avg}} / {{mon.dps.avg}} DPS</td>
+				</tr>
+				<tr>
+					<td colspan="2">DEFENSE</td>
+				</tr>
+				<tr>
+					<td colspan="2">{{mon.dps.current_gym_cp}} / {{mon.dps.gym_cp}} DP</td>
+				</tr>
+				<tr>
+					<td colspan="2">{{mon.dps.current_gym}} / {{mon.dps.gym}} DPS</td>
 				</tr>
 			</table>
 			<div class="actions">
